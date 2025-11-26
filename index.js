@@ -77,6 +77,22 @@ async function run() {
         res.status(500).json({ message: "Server error", error: err.message });
       }
     });
+    // GET Latest Games
+    app.get("/latest/games", async (req, res) => {
+      try {
+        const cursor = gamesCollection
+          .find({})
+          .sort({ createdAt: -1 })
+          .limit(6);
+
+        const result = await cursor.toArray();
+        res.send(result);
+      } catch (error) {
+        res
+          .status(500)
+          .send({ message: "Failed to fetch latest games", error });
+      }
+    });
 
     // POSTING
     // REGISTER (POST)
