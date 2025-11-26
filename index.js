@@ -44,6 +44,14 @@ async function run() {
     const usersCollection = database.collection("users");
     const gamesCollection = database.collection("games");
 
+    // READING
+    // USER GAMES
+    app.get("/games/user", async (req, res) => {
+      const email = req.query.email;
+      const result = await gamesCollection.find({ userEmail: email }).toArray();
+      res.send(result);
+    });
+
     // POSTING
     // REGISTER (POST)
     app.post("/register", async (req, res) => {
