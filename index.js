@@ -141,6 +141,26 @@ async function run() {
         res.status(500).json({ message: "Server error" });
       }
     });
+
+    // DELETING
+    // GAME (DELETE)
+    app.delete("/games/:id", async (req, res) => {
+      try {
+        const id = req.params.id;
+        const result = await gamesCollection.deleteOne({
+          _id: new ObjectId(id),
+        });
+
+        if (result.deletedCount === 0) {
+          return res.status(404).send({ message: "Game not found" });
+        }
+
+        res.send({ message: "Game deleted successfully" });
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: "Server error" });
+      }
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
