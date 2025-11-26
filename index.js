@@ -86,6 +86,53 @@ async function run() {
         res.status(500).json({ message: "Server error" });
       }
     });
+    // ADD GAME (POST)
+    app.post("/games", async (req, res) => {
+      try {
+        const {
+          title,
+          coverImage,
+          description,
+          rating,
+          price,
+          genre,
+          userEmail,
+        } = req.body;
+
+        // Required validation
+        if (
+          !title ||
+          !coverImage ||
+          !description ||
+          !rating ||
+          !price ||
+          !genre
+        ) {
+          return res.status(400).json({ message: "All fields are required" });
+        }
+
+        const newGame = {
+          title,
+          coverImage,
+          description,
+          rating: Number(rating),
+          price: Number(price),
+          genre,
+          userEmail: userEmail || null,
+          createdAt: new Date(),
+        };
+
+        const result = await gamesCollection.insertOne(newGame);
+
+        res.json({
+          message: "Game added successfully",
+          insertedId: result.insertedId,
+          game: newGame,
+        });
+      } catch (err) {
+        res.status(500).json({ message: "Server error" });
+      }
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
