@@ -11,7 +11,11 @@ const app = express();
 // middleware
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001"],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "https://mrirakib-ejp-nextjs-task-client.vercel.app",
+    ],
     credentials: true,
   })
 );
