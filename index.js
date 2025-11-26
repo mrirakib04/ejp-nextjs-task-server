@@ -60,6 +60,23 @@ async function run() {
         res.status(500).json({ message: "Server error", error: err.message });
       }
     });
+    // GAME DETAILS
+    app.get("/games/details", async (req, res) => {
+      try {
+        const { id } = req.query;
+        if (!id)
+          return res.status(400).json({ message: "Game ID is required" });
+
+        const game = await gamesCollection.findOne({ _id: new ObjectId(id) });
+
+        if (!game) return res.status(404).json({ message: "Game not found" });
+
+        res.json(game);
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error", error: err.message });
+      }
+    });
 
     // POSTING
     // REGISTER (POST)
