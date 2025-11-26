@@ -51,6 +51,15 @@ async function run() {
       const result = await gamesCollection.find({ userEmail: email }).toArray();
       res.send(result);
     });
+    // ALL GAMES
+    app.get("/games", async (req, res) => {
+      try {
+        const games = await gamesCollection.find().toArray();
+        res.json(games);
+      } catch (err) {
+        res.status(500).json({ message: "Server error", error: err.message });
+      }
+    });
 
     // POSTING
     // REGISTER (POST)
